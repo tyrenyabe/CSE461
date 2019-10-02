@@ -17,4 +17,6 @@ header = pack('>IIHH', 12, 0, 1, 363) + message.encode('utf-8')
 sock.sendto(header, (UDP_IP, UDP_PORT))
 
 ans = sock.recv(1024)
+
+# (16, 0, 2, 363, 14, 50, 40047, 53)
 print(unpack('>IIHHIIII', ans))
