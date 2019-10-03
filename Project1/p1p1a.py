@@ -1,7 +1,5 @@
 import socket
-import ctypes
 from struct import pack, unpack
-import sys
 
 UDP_IP = "attu2.cs.washington.edu"
 UDP_PORT = 12235
