@@ -1,6 +1,7 @@
 import socket
 from struct import pack, unpack
 
+# Part A - Send "hello world" to server using UDP protocol
 UDP_IP = "attu2.cs.washington.edu"
 UDP_PORT = 12235
 
@@ -17,9 +18,8 @@ ans = sock.recv(1024)
 print(unpack('>IIHHIIII', ans))
 payload_len, psecret, step, sid, num, ln, UDP_PORT, secretA = unpack('>IIHHIIII', ans)
 
-sock = socket.socket(socket.AF_INET, # Internet
-                     socket.SOCK_DGRAM) # UDP
-
+# Part B - send set of packets to server and make sure the server responds
+# indicating that the packets have been received using UDP protocol
 i = 0
 while(i < num):
     header = pack('>IIHHI', ln + 4, secretA, 1, 363, i)
@@ -46,3 +46,20 @@ ans = sock.recv(1024)
 print(unpack('>IIHHII', ans))
 
 payload_len, psecret, step, sid, TCP_PORT, secretB = unpack('>IIHHII', ans)
+
+# Part C - Connect to server using TCP protocol and extract information from received packet
+TCP_IP = "attu2.cs.washington.edu"
+sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+sock.connect((TCP_IP, TCP_PORT))
+
+sock.settimeout(1)
+ans = sock.recv(1024)
+
+print(len(ans))
+print(unpack('>IIHHIIIcccc', ans))
+
+payload_len, psecret, step, sid, num2, ln2, secretC, c, _, _, _ = unpack('>IIHHIIIcccc', ans)
+
+# Part D - Send set of packets each with a previously specified length that are filled with
+# the provided character from Part C
+
