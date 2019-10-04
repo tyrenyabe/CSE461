@@ -5,6 +5,8 @@ from _thread import *
 from time import sleep
 from struct import pack, unpack
 
+## TODO Test on attu, get rid of magic numbers, clean up code(?)
+
 def ProcessPacket(message, client_ip):
     # Verify header of message
     if (len(message) % 4 != 0):
