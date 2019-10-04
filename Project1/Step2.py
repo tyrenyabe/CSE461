@@ -33,7 +33,6 @@ def ProcessPacket(message, client_ip):
     sock.settimeout(3)
 
     received_messages = 0
-    print(num)
     while received_messages < num:
         try:
             message = sock.recv(1024)
@@ -64,6 +63,59 @@ def ProcessPacket(message, client_ip):
     secretB = random.randint(1, 500)
     response = pack('>IIHHII', 4, psecret, 2, sid, tcp_port, secretB)
     sock.sendto(response, client_ip)
+
+    # Bind socket to new TCP port
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.bind((udp_ip, tcp_port))
+    sock.listen(10)
+    connection, client_address = sock.accept()
+
+    num = random.randint(5, 20)
+    ln = random.randint(24, 500)
+    secretC = random.randint(1, 500)
+    special_char = chr(random.randint(0, 100))
+    buffer = special_char + "xxx"
+    response = pack('>IIHHIII', 13, secretB, 2, sid, num, ln, secretC) + buffer.encode("ascii")
+    connection.sendto(response, client_address)
+    
+    received_messages = 0
+    sock.settimeout(3)
+    message_length = 12 + ln
+
+    if (message_length % 4 != 0):
+        message_length += (4 - message_length % 4)
+
+    while received_messages < num:
+        # print(received_messages)
+        try:
+            message = connection.recv(message_length)
+            print(len(message))
+        except:
+            print("1")
+            return
+        
+        # Verify message contents
+        if (len(message) % 4 != 0): # do this for previous parts
+            print("2")
+            return
+
+        payload_len, psecret, step, sid = unpack('>IIHH', message[0:12])
+        payload = message[12:12+ln]
+
+        if (psecret != secretC or payload_len != ln or step != 1):
+            print("3")
+            return
+
+        for i in range(ln):
+            if chr(payload[i]) != special_char:
+                print("4")
+                return
+
+        received_messages += 1
+
+    secretD = random.randint(1, 500)
+    response = pack('>IIHHI', 4, secretC, 2, sid, secretD)
+    connection.sendto(response, client_address)
 
 
 def Main():
