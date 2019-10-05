@@ -3,7 +3,6 @@ from struct import pack, unpack
 
 # Part A - Send "hello world" to server using UDP protocol
 print("Beginning Part A")
-# UDP_IP = "192.168.0.106"
 UDP_IP = "127.0.0.1"
 UDP_PORT = 12235
 
@@ -34,8 +33,6 @@ while(i < num):
         payload = bytearray(ln)
     message = header + payload
 
-    # Debug print
-    # print(i, " | ", len(message))
     sock.sendto(message, (UDP_IP, UDP_PORT))
 
     try:
@@ -53,7 +50,9 @@ payload_len, psecret, step, sid, TCP_PORT, secretB = unpack('>IIHHII', ans)
 
 # Part C - Connect to server using TCP protocol and extract information from received packet
 print("Beginning Part C")
+
 TCP_IP = "127.0.0.1"
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((TCP_IP, TCP_PORT))
 

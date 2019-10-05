@@ -32,8 +32,6 @@ while(i < num):
         payload = bytearray(ln)
     message = header + payload
 
-    # Debug print
-    # print(i, " | ", len(message))
     sock.sendto(message, (UDP_IP, UDP_PORT))
 
     try:
@@ -51,7 +49,9 @@ payload_len, psecret, step, sid, TCP_PORT, secretB = unpack('>IIHHII', ans)
 
 # Part C - Connect to server using TCP protocol and extract information from received packet
 print("Beginning Part C")
+
 TCP_IP = "attu2.cs.washington.edu"
+
 sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 sock.connect((TCP_IP, TCP_PORT))
 
