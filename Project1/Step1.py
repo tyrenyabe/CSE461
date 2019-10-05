@@ -10,7 +10,7 @@ UDP_PORT = 12235
 # Initialization of variables to reduce use of magic numbers
 INITIAL_SECRET = 0
 CLIENT_STEP_NUM = 1
-STUDENT_ID = 316
+STUDENT_ID = 363
 TIMEOUT = 1
 QUICK_TIMEOUT = 0.5
 BUFFER_LEN = 1024
