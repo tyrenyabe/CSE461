@@ -74,14 +74,12 @@ def ProcessPacket(message, client_ip):
         
         # Verify message contents
         if (len(message) != EXPECTED_MESSAGE_LEN):
-            print("1")
             return
 
         payload_len, psecret, step, sid, pid = unpack('>IIHHI', message[0:HEADER_LEN + FOUR_BYTE_INT])
         payload = message[HEADER_LEN + FOUR_BYTE_INT:HEADER_LEN + FOUR_BYTE_INT + payload_len]
 
         if (psecret != secretA or payload_len != ln + FOUR_BYTE_INT or step != CLIENT_STEP_NUM or pid != received_messages):
-            print("2")
             return
         
         # Form and send response
