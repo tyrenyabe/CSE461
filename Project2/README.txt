@@ -1,0 +1,3 @@
+skol
+tkdy
+ct56
